@@ -1,3 +1,9 @@
+//==================================================================================================
+// Project2.cpp
+// This program is used to solve/calculate the Equal Partitioning Problem
+// By: Anthony Brancucci, Luis Castro, Brandon Toun
+//==================================================================================================
+
 #include <iostream>
 #include <fstream>
 #include <climits>
