@@ -8,14 +8,60 @@
 #include <fstream>
 #include <climits>
 #include <math.h>
+#include <stack>
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
 	cout << "Hello World!" << endl;
 
+	// This part of the code will read in from input.txt
+	int cases;
+	ifstream inputFile;
+
+	inputFile.open(argv[1]);
+
+	if (!inputFile.is_open())
+	{
+		cout << "Error opening file. Aborting program." << endl;
+		return -1;
+	}
+
+	ofstream output;
+	output.open("output.txt");
+	output.close();
+
+	inputFile >> cases;
+
+	for (int i = 0; i < cases; i++)
+	{
+		int n;
+		int k;
+		int t;
+		int j = 0;
+
+		int array[n];
+
+		while (j < n)
+		{
+			inputFile >> array[j++];
+		}
+
+		cout << "\nInput Array: ";
+		for (int i = 0; i < n; i++)
+		{
+			cout << " " << array[i] << " ";
+		}
+		cout << endl;
+	}
+	inputFile.close();
+
 	int refString[] = {5, 2, 3, 4, 10};
 	int count = 0;
+
+
+
+	stack<int> stack1;
 
 	// Constant t value
 	static const int T = 10;
@@ -39,7 +85,6 @@ int main()
 		for (int j = 0; j < arraySize; j++)
 		{
 			dp[i][j] = INT_MAX;
-			//cout << "dp[" << i << "]" << "[" << j << "] = " << dp[i][j] << endl;
 		}
 	}
 
@@ -94,7 +139,7 @@ int main()
 		}
 	}
 
-	cout << "\n\nFinal Print of Map" << endl;
+	cout << "\nFinal Print of Map" << endl;
 
 	for (int i = 0; i < arraySize; i++)
 	{
@@ -102,6 +147,34 @@ int main()
 		{
 			cout << "dp[" << i << "]" << "[" << j << "] = " << dp[i][j] << endl;
 		}
+	}
+
+	// This variable holds column being observed
+	int column = arraySize - 1;;
+	int row = 0;
+	int stackCount = 0;
+	int stackMin = INT_MAX;
+
+	while (column >= 0)
+	{
+		stackMin = INT_MAX;
+		for (int i = 0; i < arraySize; i++)
+		{
+			if ((stackMin > dp[i][column]))
+			{
+				stackMin = dp[i][column];
+				row = i;
+			}
+		}
+		stack1.push(column-row+1);
+		column = row - 1;
+		stackCount++;
+	}
+	cout << "stackCount = " << stackCount << endl;
+	while (!stack1.empty())
+	{
+		cout << stack1.top() << endl;
+		stack1.pop();
 	}
 
 	return 0;
