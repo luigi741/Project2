@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 
 	inputFile >> cases;
 
-	for (int i = 0; i < cases; i++)
+	for (int y = 0; y < cases; y++)
 	{
 		int n;
 		int t;
@@ -60,11 +60,16 @@ int main(int argc, char* argv[])
 		// Constant t value
 		int T = t;
 
-		// Size of our original array/string
+		// Size of our original arranty/string
 		int arraySize = sizeof(refString)/sizeof(*refString);
 
 		int dp[arraySize][arraySize];
-
+		int min[arraySize];
+		
+		for(int i = 0; i< arraySize; i++)
+		{
+			min[i] = INT_MAX;
+		}
 		// Populate map with INT_MAX
 		for (int i = 0; i < arraySize; i++)
 		{
@@ -85,22 +90,27 @@ int main(int argc, char* argv[])
 
 				if (sum <= T)
 				{
-					int minimum = INT_MAX;
 					if (i != 0)
 					{
-						for (int x = 0; x < arraySize; x++)
+						int score = (T-sum)*(T-sum) + min[i-1];
+						dp[i][j] = score;
+						
+						if(min[j] > score)
 						{
-							if (minimum > dp[x][i-1])
-							{
-								minimum = dp[x][i-1];
-							}
+							min[j] = score;
 						}
+						
+					
 					}
 					else
 					{
-						minimum = 0;
+						dp[i][j] = (T-sum)*(T-sum);
+						if(min[j] > (T-sum)*(T-sum))
+						{
+							min[j] = (T-sum)*(T-sum);
+						}
 					}
-					dp[i][j] = pow(T-sum, 2) + minimum;
+					
 				}
 				else
 				{
@@ -149,10 +159,21 @@ int main(int argc, char* argv[])
 			stack1.pop();
 		}
 		output << endl;
+		
+		if(y == 0)
+	{
+		for(int i = 0; i< arraySize; i++)
+		{
+			cout << min[i] << " ";
+		}
+	}
 	}
 	cout << endl;
 
 	inputFile.close();
 	output.close();
+	
+	
+	
 	return 0;
 }
